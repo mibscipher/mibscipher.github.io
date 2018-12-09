@@ -34,14 +34,14 @@ $$S : F_2^4 → F_2^4 : x_i → y_i = s(x_i) , \mbox{ for } 1 ≤ i ≤ 8$$
 $$M : (GF(2)^4)^8 → (GF(2)^4)^8 , (y_8 , y_7 , . . . , y_1 ) → (y_8' , y_7' , . . . , y_1' ) ⇔$$
 
 $$\begin{array}{l}
-y1' = y2 \oplus y3 \oplus y4 \oplus y5 \oplus y6 \oplus y7 \\
-y2' = y1 \oplus y3 \oplus y4 \oplus y6 \oplus y7 \oplus y8 \\
-y3' = y1 \oplus y2 \oplus y4 \oplus y5 \oplus y7 \oplus y8 \\
-y4' = y1 \oplus y2 \oplus y3 \oplus y5 \oplus y6 \oplus y8 \\
-y5' = y1 \oplus y2 \oplus y4 \oplus y5 \oplus y6 \\
-y6' = y1 \oplus y2 \oplus y3 \oplus y6 \oplus y7 \\
-y7' = y2 \oplus y3 \oplus y4 \oplus y7 \oplus y8 \\
-y8 = y1 \oplus y3 \oplus y4 \oplus y5 \oplus y8 \\
+y_1' = y_2 \oplus y_3 \oplus y_4 \oplus y_5 \oplus y_6 \oplus y_7 \\
+y_2' = y_1 \oplus y_3 \oplus y_4 \oplus y_6 \oplus y_7 \oplus y_8 \\
+y_3' = y_1 \oplus y_2 \oplus y_4 \oplus y_5 \oplus y_7 \oplus y_8 \\
+y_4' = y_1 \oplus y_2 \oplus y_3 \oplus y_5 \oplus y_6 \oplus y_8 \\
+y_5' = y_1 \oplus y_2 \oplus y_4 \oplus y_5 \oplus y_6 \\
+y_6' = y_1 \oplus y_2 \oplus y_3 \oplus y_6 \oplus y_7 \\
+y_7' = y_2 \oplus y_3 \oplus y_4 \oplus y_7 \oplus y_8 \\
+y_8 = y_1 \oplus y_3 \oplus y_4 \oplus y_5 \oplus y_8 
 \end{array}$$
 
   **Permutation layer P.** Finally, the eight nibble outputs from the mixing layer are arranged according to Table 2. Each nibble is moved to a new position by P. 
@@ -51,7 +51,7 @@ y8 = y1 \oplus y3 \oplus y4 \oplus y5 \oplus y8 \\
 | P   | 2 | 8 | 1 | 3 | 6 | 7 | 4 | 5 |
 
 
-**Key schedule for 64-bit key.** The design principle of MIBS key schedule is adopted from the design principle of PRESENT key schedule. Our key schedule, generates 32-bit round key $k_i$ , for $ 0 ≤ i ≤ 31$ , from 64-bit user key $K$ (represented as $k_{63} , k_{62} , ..., k_0$ ). We denote the key state of the $i$-th round as state $i$ . The key state for each round is updated as follows. 
+  **Key schedule for 64-bit key.** The design principle of MIBS key schedule is adopted from the design principle of PRESENT key schedule. Our key schedule, generates 32-bit round key $k_i$ , for $ 0 ≤ i ≤ 31$ , from 64-bit user key $K$ (represented as $k_{63} , k_{62} , ..., k_0$ ). We denote the key state of the $i$-th round as state $i$ . The key state for each round is updated as follows. 
 
 $$\begin{array}{l}
 state^0 = user-key \\
@@ -61,19 +61,17 @@ state^i = state^i[63:16] ||state^i[15:11] \oplus Round-Counter||state^i[10:0]\\
 k^i = state^i[63:32] \\
 \end{array}$$
 
-where $ \ggg $ means rotation to right, $[i : j]$ indicates the $i$-th to the $j$-th bits are involved in the operation, and $||$ denotes concatenation. Also we use the same S-box as in the F-function. The round key $k^i$ is the 32 left most bits of the current state. 
+where $ \ggg $ means rotation to right, $ [i:j] $ indicates the $i$-th to the $j$-th bits are involved in the operation, and $ \|\| $ denotes concatenation. Also we use the same S-box as in the F-function. The round key $ k^i $ is the 32 left most bits of the current state. 
 
-**Key schedule for 80-bit key.** The key $K$ is ﬁrst initialized with the user key, and updates as follows. 
+  **Key schedule for 80-bit key.** The key $K$ is ﬁrst initialized with the user key, and updates as follows. 
 
-$$
-\begin{array}{l}
+$$\begin{array}{l}
 state^0 = user-key \\
 state^i = state^i \ggg 19 \\
 state^i = S-box(state^i[79:76] )||S-box(state^i[75:72] )||state^i[71:0] \\
 state^i = state^i[79:19] ||state^i[18:14] \oplus Round-Counter||state^i[13:0]\\
 k^i = state^i[79:48]\\
-\end{array}
-$$
+\end{array}$$
 
 After that, the round key $k^i$ is the 32 left most bits of the key state.
 
