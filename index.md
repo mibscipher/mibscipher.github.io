@@ -9,6 +9,8 @@ Key addition. Current state $s31 , s30 , ..., s0$ , which is input to the F-func
 
 You can use the [editor on GitHub](https://github.com/mibscipher/mibscipher.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
+
+ [Test On Editor](https://github.com/mibscipher/mibscipher.github.io/master/Welcome.md):
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 $ x=y$
 ### Markdown
