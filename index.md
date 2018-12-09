@@ -19,11 +19,11 @@ MIBS uses a Feistel structure with data block length of 64-bit and key lengths o
        $$s_j = s_j \oplus k_j^ii , \mbox{ for } 0 ≤ j ≤ 31$$
 
 **Substitution layer S.** After adding subkey, the block is divided into eight nibbles \\(x_8 , x_7 , ..., x_1\\) , before processing by the S-boxes. The 4 × 4 S-box used in our cipher is the same as the ﬁrst S-box used in mCRYPTON and is shown in Table [tab-mibs-sbox]. 
-[S-box mapping][tab-mibs-sbox]
+
 | \\(x\\)    | 0 | 1  | 2 | 3 | 4  | 5  | 6  | 7 | 8  | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
 |------------|---|----|---|---|----|----|----|---|----|---|----|----|----|----|----|----|
 | \\(S(x)\\) | 4 | 15 | 3 | 8 | 13 | 10 | 12 | 0 | 11 | 5 | 7  | 14 | 2  | 6  | 1  | 9  |
-
+[S-box mapping][tab-mibs-sbox]
 
 The non-linear layer is composed of eight identical 4 × 4 S-boxes, so in this transformation nibble-wise substitution is applied. 
 
@@ -46,12 +46,13 @@ y8 = y1 \oplus y3 \oplus y4 \oplus y5 \oplus y8 \\
 \end{array}
 $$
 
-**Permutation layer P.** Finally, the eight nibble outputs from the mixing layer are arranged according to Table 2. Each nibble is moved to a new position by P. 
+  **Permutation layer P.** Finally, the eight nibble outputs from the mixing layer are arranged according to Table [tab-mibs-perm]. Each nibble is moved to a new position by P. 
 
-[Permutation mapping][tab-mibs-perm]
+
 | /// | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 |-----|---|---|---|---|---|---|---|---|
 | P   | 2 | 8 | 1 | 3 | 6 | 7 | 4 | 5 |
+[Permutation mapping][tab-mibs-perm]
 
 **Key schedule for 64-bit key.** The design principle of MIBS key schedule is adopted from the design principle of PRESENT key schedule. Our key schedule, generates 32-bit round key $k_i$ , for $ 0 ≤ i ≤ 31$ , from 64-bit user key $K$ (represented as $k_{63} , k_{62} , ..., k_0$ ). We denote the key state of the $i$-th round as state $i$ . The key state for each round is updated as follows. 
 
