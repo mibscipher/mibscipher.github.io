@@ -23,6 +23,7 @@ MIBS uses a Feistel structure with data block length of 64-bit and key lengths o
 | \\(x\\)    | 0 | 1  | 2 | 3 | 4  | 5  | 6  | 7 | 8  | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
 |------------|---|----|---|---|----|----|----|---|----|---|----|----|----|----|----|----|
 | \\(S(x)\\) | 4 | 15 | 3 | 8 | 13 | 10 | 12 | 0 | 11 | 5 | 7  | 14 | 2  | 6  | 1  | 9  |
+
 [S-box mapping][tab-mibs-sbox]
 
 The non-linear layer is composed of eight identical 4 × 4 S-boxes, so in this transformation nibble-wise substitution is applied. 
@@ -52,21 +53,20 @@ $$
 | /// | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 |-----|---|---|---|---|---|---|---|---|
 | P   | 2 | 8 | 1 | 3 | 6 | 7 | 4 | 5 |
+
 [Permutation mapping][tab-mibs-perm]
 
 **Key schedule for 64-bit key.** The design principle of MIBS key schedule is adopted from the design principle of PRESENT key schedule. Our key schedule, generates 32-bit round key $k_i$ , for $ 0 ≤ i ≤ 31$ , from 64-bit user key $K$ (represented as $k_{63} , k_{62} , ..., k_0$ ). We denote the key state of the $i$-th round as state $i$ . The key state for each round is updated as follows. 
 
-$$
-\begin{array}{l}
+$$\begin{array}{l}
 state^0 = user-key \\
 state^i = state^i \ggg 15 \\
 state^i = S-box(state^i[63:60] )||state^i[59:0]\\
 state^i = state^i[63:16] ||state^i[15:11] \oplus Round-Counter||state^i[10:0]\\
 k^i = state^i[63:32] \\
-\end{array}
-$$
+\end{array}$$
 
-where $\ggg$ means rotation to right, $[i : j]$ indicates the $i$-th to the $j$-th bits are involved in the operation, and $||$ denotes concatenation. Also we use the same S-box as in the F-function. The round key $k^i$ is the 32 left most bits of the current state. 
+where $ \ggg $ means rotation to right, $[i : j]$ indicates the $i$-th to the $j$-th bits are involved in the operation, and $||$ denotes concatenation. Also we use the same S-box as in the F-function. The round key $k^i$ is the 32 left most bits of the current state. 
 
 **Key schedule for 80-bit key.** The key $K$ is ﬁrst initialized with the user key, and updates as follows. 
 
