@@ -1,3 +1,8 @@
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
 <script type="text/javascript" async
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
@@ -10,29 +15,54 @@
 MIBS uses a Feistel structure with data block length of 64-bit and key lengths of 64-bit or 80-bit and consists of 32 rounds. The round structure is shown in Fig. 1. For applications that require moderate security levels, such as low-cost RFID tags, 64-bit security is adequate. In practice, there is a tradeoﬀ between hardware eﬃciency and security. The F-function, depicted in Fig. 2, operates on half a block (32 bits), representing it into eight nibbles, and it consists of four stages: key addition, non-linear substitution layer, linear mixing layer, and nibble-wise permutation.
 
 
-Key addition. Current state \\(s_{31} , s_{30} , ..., s_{0}\\) , which is input to the F-function, is combined with a round subkey \\(k^i = k_{31}^i , k_{30}^i , ... , k_0^i\\) for \\(1 ≤ i ≤ 32\\), using a bit-wise XOR operation. Since XOR is well-suited to hardware implementation, all subkeys are bitwise XORed with data before substitution layer. 
-       $$s_j = s_j ⊕ k_j^ii , \mbox{ for } 0 ≤ j ≤ 31$$
+**Key addition.** Current state \\(s_{31} , s_{30} , ..., s_{0}\\) , which is input to the F-function, is combined with a round subkey \\(k^i = k_{31}^i , k_{30}^i , ... , k_0^i\\) for \\(1 ≤ i ≤ 32\\), using a bit-wise XOR operation. Since XOR is well-suited to hardware implementation, all subkeys are bitwise XORed with data before substitution layer. 
+       $$s_j = s_j \oplus k_j^ii , \mbox{ for } 0 ≤ j ≤ 31$$
 
-Substitution layer S. After adding subkey, the block is divided into eight nibbles \\(x_8 , x_7 , ..., x_1\\) , before processing by the S-boxes. The 4 × 4 S-box used in our cipher is the same as the ﬁrst S-box used in mCRYPTON and is shown in Table 1. 
+**Substitution layer S.** After adding subkey, the block is divided into eight nibbles \\(x_8 , x_7 , ..., x_1\\) , before processing by the S-boxes. The 4 × 4 S-box used in our cipher is the same as the ﬁrst S-box used in mCRYPTON and is shown in Table 1. 
+
+| \\(x\\)    | 0 | 1  | 2 | 3 | 4  | 5  | 6  | 7 | 8  | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
+|------------|---|----|---|---|----|----|----|---|----|---|----|----|----|----|----|----|
+| \\(S(x)\\) | 4 | 15 | 3 | 8 | 13 | 10 | 12 | 0 | 11 | 5 | 7  | 14 | 2  | 6  | 1  | 9  |
+
+
 The non-linear layer is composed of eight identical 4 × 4 S-boxes, so in this transformation nibble-wise substitution is applied. 
 
 $$S : F_2^4 → F_2^4 : x_i → y_i = s(x_i) , \mbox{ for } 1 ≤ i ≤ 8$$ 
 
 Mixing layer M. The linear transformation mixes eight nibbles as follows: 
+
 $$M : (GF(2)^4)^8 → (GF(2)^4)^8 , (y_8 , y_7 , . . . , y_1 ) → (y_8' , y_7' , . . . , y_1' ) ⇔$$
 
 $$
-y1' = y2 ⊕ y3 ⊕ y4 ⊕ y5 ⊕ y6 ⊕ y7 
-y2' = y1 ⊕ y3 ⊕ y4 ⊕ y6 ⊕ y7 ⊕ y8 
-y3' = y1 ⊕ y2 ⊕ y4 ⊕ y5 ⊕ y7 ⊕ y8 
-y4' = y1 ⊕ y2 ⊕ y3 ⊕ y5 ⊕ y6 ⊕ y8 
-y5' = y1 ⊕ y2 ⊕ y4 ⊕ y5 ⊕ y6 
-y6' = y1 ⊕ y2 ⊕ y3 ⊕ y6 ⊕ y7 
-y7' = y2 ⊕ y3 ⊕ y4 ⊕ y7 ⊕ y8 
-y8 = y1 ⊕ y3 ⊕ y4 ⊕ y5 ⊕ y8
+\begin{array}{l}
+y1' = y2 \oplus y3 \oplus y4 \oplus y5 \oplus y6 \oplus y7 \\
+y2' = y1 \oplus y3 \oplus y4 \oplus y6 \oplus y7 \oplus y8 \\
+y3' = y1 \oplus y2 \oplus y4 \oplus y5 \oplus y7 \oplus y8 \\
+y4' = y1 \oplus y2 \oplus y3 \oplus y5 \oplus y6 \oplus y8 \\
+y5' = y1 \oplus y2 \oplus y4 \oplus y5 \oplus y6 \\
+y6' = y1 \oplus y2 \oplus y3 \oplus y6 \oplus y7 \\
+y7' = y2 \oplus y3 \oplus y4 \oplus y7 \oplus y8 \\
+y8 = y1 \oplus y3 \oplus y4 \oplus y5 \oplus y8 \\
+\end{array}
 $$
 
-Permutation layer P. Finally, the eight nibble outputs from the mixing layer are arranged according to Table 2. Each nibble is moved to a new position by P. Key schedule for 64-bit key. The design principle of MIBS key schedule is adopted from the design principle of PRESENT key schedule. Our key schedule, generates 32-bit round key k i , for 0 ≤ i ≤ 31, from 64-bit user key K (represented as k63 , k62 , ..., k0 ). We denote the key state of the i-th round as statei . The key state for each round is updated as follows. state0 = user-key statei = statei ≫ 15 statei = S-box(statei[63:60] )||statei[59:0] statei = statei[63:16] ||statei[15:11] ⊕ Round-Counter||statei[10:0] k i = statei[63:32] where ≫ means rotation to right, [i : j] indicates the i-th to the j-th bits are involved in the operation, and || denotes concatenation. Also we use the same S-box as in the F-function. The round key k i is the 32 left most bits of the current state. Key schedule for 80-bit key. The key K is ﬁrst initialized with the user key, and updates as follows. state0 = user-key statei = statei ≫ 19 statei = S-box(statei[79:76] )||S-box(statei[75:72] )||statei[71:0] statei = statei[79:19] ||statei[18:14] ⊕ Round-Counter||statei[13:0] k i = statei[79:48] After that, the round key k i is the 32 left most bits of the key state.
+**Permutation layer P.** Finally, the eight nibble outputs from the mixing layer are arranged according to Table 2. Each nibble is moved to a new position by P. 
+
+**Key schedule for 64-bit key.** The design principle of MIBS key schedule is adopted from the design principle of PRESENT key schedule. Our key schedule, generates 32-bit round key $k_i$ , for $ 0 ≤ i ≤ 31$ , from 64-bit user key $K$ (represented as $k_{63} , k_{62} , ..., k_0$ ). We denote the key state of the $i$-th round as state $i$ . The key state for each round is updated as follows. 
+$$state^0 = user-key $$
+$$state^i = state^i \ggg 15 $$
+$$state^i = S-box(state^i[63:60] )||state^i[59:0]$$
+$$state^i = state^i[63:16] ||state^i[15:11] \oplus Round-Counter||state^i[10:0]$$
+$$k^i = state^i[63:32] $$
+where $\ggg$ means rotation to right, $[i : j]$ indicates the $i$-th to the $j$-th bits are involved in the operation, and $||$ denotes concatenation. Also we use the same S-box as in the F-function. The round key $k^i$ is the 32 left most bits of the current state. 
+
+**Key schedule for 80-bit key.** The key $K$ is ﬁrst initialized with the user key, and updates as follows. 
+$$state^0 = user-key $$
+$$state^i = state^i \ggg 19 $$ 
+$$state^i = S-box(state^i[79:76] )||S-box(state^i[75:72] )||state^i[71:0]
+$$state^i = state^i[79:19] ||state^i[18:14] \oplus Round-Counter||state^i[13:0]$$
+$$k^i = state^i[79:48]$$ 
+After that, the round key $k^i$ is the 32 left most bits of the key state.
 
 ## Design Rationale 
 ### The Cipher Structure 
