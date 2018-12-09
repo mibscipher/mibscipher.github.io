@@ -33,8 +33,7 @@ $$S : F_2^4 → F_2^4 : x_i → y_i = s(x_i) , \mbox{ for } 1 ≤ i ≤ 8$$
 
 $$M : (GF(2)^4)^8 → (GF(2)^4)^8 , (y_8 , y_7 , . . . , y_1 ) → (y_8' , y_7' , . . . , y_1' ) ⇔$$
 
-$$
-\begin{array}{l}
+$$\begin{array}{l}
 y1' = y2 \oplus y3 \oplus y4 \oplus y5 \oplus y6 \oplus y7 \\
 y2' = y1 \oplus y3 \oplus y4 \oplus y6 \oplus y7 \oplus y8 \\
 y3' = y1 \oplus y2 \oplus y4 \oplus y5 \oplus y7 \oplus y8 \\
@@ -43,13 +42,12 @@ y5' = y1 \oplus y2 \oplus y4 \oplus y5 \oplus y6 \\
 y6' = y1 \oplus y2 \oplus y3 \oplus y6 \oplus y7 \\
 y7' = y2 \oplus y3 \oplus y4 \oplus y7 \oplus y8 \\
 y8 = y1 \oplus y3 \oplus y4 \oplus y5 \oplus y8 \\
-\end{array}
-$$
+\end{array}$$
 
   **Permutation layer P.** Finally, the eight nibble outputs from the mixing layer are arranged according to Table 2. Each nibble is moved to a new position by P. 
 
 
-| /// | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|     | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 |-----|---|---|---|---|---|---|---|---|
 | P   | 2 | 8 | 1 | 3 | 6 | 7 | 4 | 5 |
 
