@@ -18,8 +18,8 @@ MIBS uses a Feistel structure with data block length of 64-bit and key lengths o
 **Key addition.** Current state \\(s_{31} , s_{30} , ..., s_{0}\\) , which is input to the F-function, is combined with a round subkey \\(k^i = k_{31}^i , k_{30}^i , ... , k_0^i\\) for \\(1 ≤ i ≤ 32\\), using a bit-wise XOR operation. Since XOR is well-suited to hardware implementation, all subkeys are bitwise XORed with data before substitution layer. 
        $$s_j = s_j \oplus k_j^ii , \mbox{ for } 0 ≤ j ≤ 31$$
 
-**Substitution layer S.** After adding subkey, the block is divided into eight nibbles \\(x_8 , x_7 , ..., x_1\\) , before processing by the S-boxes. The 4 × 4 S-box used in our cipher is the same as the ﬁrst S-box used in mCRYPTON and is shown in Table 1. 
-
+**Substitution layer S.** After adding subkey, the block is divided into eight nibbles \\(x_8 , x_7 , ..., x_1\\) , before processing by the S-boxes. The 4 × 4 S-box used in our cipher is the same as the ﬁrst S-box used in mCRYPTON and is shown in Table [tab-mibs-sbox]. 
+[S-box mapping][tab-mibs-sbox]
 | \\(x\\)    | 0 | 1  | 2 | 3 | 4  | 5  | 6  | 7 | 8  | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
 |------------|---|----|---|---|----|----|----|---|----|---|----|----|----|----|----|----|
 | \\(S(x)\\) | 4 | 15 | 3 | 8 | 13 | 10 | 12 | 0 | 11 | 5 | 7  | 14 | 2  | 6  | 1  | 9  |
@@ -48,20 +48,37 @@ $$
 
 **Permutation layer P.** Finally, the eight nibble outputs from the mixing layer are arranged according to Table 2. Each nibble is moved to a new position by P. 
 
+[Permutation mapping][tab-mibs-perm]
+| /// | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+|-----|---|---|---|---|---|---|---|---|
+| P   | 2 | 8 | 1 | 3 | 6 | 7 | 4 | 5 |
+
 **Key schedule for 64-bit key.** The design principle of MIBS key schedule is adopted from the design principle of PRESENT key schedule. Our key schedule, generates 32-bit round key $k_i$ , for $ 0 ≤ i ≤ 31$ , from 64-bit user key $K$ (represented as $k_{63} , k_{62} , ..., k_0$ ). We denote the key state of the $i$-th round as state $i$ . The key state for each round is updated as follows. 
-$$state^0 = user-key $$
-$$state^i = state^i \ggg 15 $$
-$$state^i = S-box(state^i[63:60] )||state^i[59:0]$$
-$$state^i = state^i[63:16] ||state^i[15:11] \oplus Round-Counter||state^i[10:0]$$
-$$k^i = state^i[63:32] $$
+
+$$
+\begin{array}{l}
+state^0 = user-key \\
+state^i = state^i \ggg 15 \\
+state^i = S-box(state^i[63:60] )||state^i[59:0]\\
+state^i = state^i[63:16] ||state^i[15:11] \oplus Round-Counter||state^i[10:0]\\
+k^i = state^i[63:32] \\
+\end{array}
+$$
+
 where $\ggg$ means rotation to right, $[i : j]$ indicates the $i$-th to the $j$-th bits are involved in the operation, and $||$ denotes concatenation. Also we use the same S-box as in the F-function. The round key $k^i$ is the 32 left most bits of the current state. 
 
 **Key schedule for 80-bit key.** The key $K$ is ﬁrst initialized with the user key, and updates as follows. 
-$$state^0 = user-key $$
-$$state^i = state^i \ggg 19 $$ 
-$$state^i = S-box(state^i[79:76] )||S-box(state^i[75:72] )||state^i[71:0]
-$$state^i = state^i[79:19] ||state^i[18:14] \oplus Round-Counter||state^i[13:0]$$
-$$k^i = state^i[79:48]$$ 
+
+$$
+\begin{array}{l}
+state^0 = user-key \\
+state^i = state^i \ggg 19 \\
+state^i = S-box(state^i[79:76] )||S-box(state^i[75:72] )||state^i[71:0] \\
+state^i = state^i[79:19] ||state^i[18:14] \oplus Round-Counter||state^i[13:0]\\
+k^i = state^i[79:48]\\
+\end{array}
+$$
+
 After that, the round key $k^i$ is the 32 left most bits of the key state.
 
 ## Design Rationale 
