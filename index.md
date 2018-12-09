@@ -61,7 +61,7 @@ state^i = state^i[63:16] ||state^i[15:11] \oplus Round-Counter||state^i[10:0]\\
 k^i = state^i[63:32] \\
 \end{array}$$
 
-where $ \ggg $ means rotation to right, $ [i:j] $ indicates the $i$-th to the $j$-th bits are involved in the operation, and $ \|\| $ denotes concatenation. Also we use the same S-box as in the F-function. The round key $ k^i $ is the 32 left most bits of the current state. 
+where $ \ggg $ means rotation to right, $ [i:j] $ indicates the $i$-th to the $j$-th bits are involved in the operation, and $ \|| $ denotes concatenation. Also we use the same S-box as in the F-function. The round key $ k^i $ is the 32 left most bits of the current state. 
 
   **Key schedule for 80-bit key.** The key $K$ is ﬁrst initialized with the user key, and updates as follows. 
 
