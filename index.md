@@ -29,7 +29,7 @@ The non-linear layer is composed of eight identical 4 × 4 S-boxes, so in this t
 
 $$S : F_2^4 → F_2^4 : x_i → y_i = s(x_i) , \mbox{ for } 1 ≤ i ≤ 8$$ 
 
-Mixing layer M. The linear transformation mixes eight nibbles as follows: 
+**Mixing layer M.** The linear transformation mixes eight nibbles as follows: 
 
 $$M : (GF(2)^4)^8 → (GF(2)^4)^8 , (y_8 , y_7 , . . . , y_1 ) → (y_8' , y_7' , . . . , y_1' ) ⇔$$
 
