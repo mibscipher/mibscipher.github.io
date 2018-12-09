@@ -10,15 +10,17 @@
 MIBS uses a Feistel structure with data block length of 64-bit and key lengths of 64-bit or 80-bit and consists of 32 rounds. The round structure is shown in Fig. 1. For applications that require moderate security levels, such as low-cost RFID tags, 64-bit security is adequate. In practice, there is a tradeoﬀ between hardware eﬃciency and security. The F-function, depicted in Fig. 2, operates on half a block (32 bits), representing it into eight nibbles, and it consists of four stages: key addition, non-linear substitution layer, linear mixing layer, and nibble-wise permutation.
 
 
-Key addition. Current state \(s_{31} , s_{30} , ..., s_{0}\) , which is input to the F-function, is combined with a round subkey \(k^i = k_{31}^i , k_{30}^i , ... , k_0^i\) for \(1 ≤ i ≤ 32\), using a bit-wise XOR operation. Since XOR is well-suited to hardware implementation, all subkeys are bitwise XORed with data before substitution layer. 
-       $$s_j = s_j ⊕ k_j^ii , \mbox{ for }0 ≤ j ≤ 31$$
+Key addition. Current state \\(s_{31} , s_{30} , ..., s_{0}\\) , which is input to the F-function, is combined with a round subkey \\(k^i = k_{31}^i , k_{30}^i , ... , k_0^i\\) for \\(1 ≤ i ≤ 32\\), using a bit-wise XOR operation. Since XOR is well-suited to hardware implementation, all subkeys are bitwise XORed with data before substitution layer. 
+       $$s_j = s_j ⊕ k_j^ii , \mbox{ for } 0 ≤ j ≤ 31$$
 
-Substitution layer S. After adding subkey, the block is divided into eight nibbles \(x_8 , x_7 , ..., x_1\) , before processing by the S-boxes. The 4 × 4 S-box used in our cipher is the same as the ﬁrst S-box used in mCRYPTON and is shown in Table 1. The non-linear layer is composed of eight identical 4 × 4 S-boxes, so in this transformation nibble-wise substitution is applied. 
+Substitution layer S. After adding subkey, the block is divided into eight nibbles \\(x_8 , x_7 , ..., x_1\\) , before processing by the S-boxes. The 4 × 4 S-box used in our cipher is the same as the ﬁrst S-box used in mCRYPTON and is shown in Table 1. 
+The non-linear layer is composed of eight identical 4 × 4 S-boxes, so in this transformation nibble-wise substitution is applied. 
 
-$$S : F_2^4 → F_2^4 : x_i → y_i = s(x_i) , \mbox{for} 1 ≤ i ≤ 8$$ 
+$$S : F_2^4 → F_2^4 : x_i → y_i = s(x_i) , \mbox{ for } 1 ≤ i ≤ 8$$ 
 
 Mixing layer M. The linear transformation mixes eight nibbles as follows: 
 $$M : (GF(2)^4)^8 → (GF(2)^4)^8 , (y_8 , y_7 , . . . , y_1 ) → (y_8' , y_7' , . . . , y_1' ) ⇔$$
+
 $$
 y1' = y2 ⊕ y3 ⊕ y4 ⊕ y5 ⊕ y6 ⊕ y7 
 y2' = y1 ⊕ y3 ⊕ y4 ⊕ y6 ⊕ y7 ⊕ y8 
