@@ -61,7 +61,7 @@ state^i = state^i[63:16] ||state^i[15:11] \oplus Round-Counter||state^i[10:0]\\
 k^i = state^i[63:32] \\
 \end{array}$$
 
-where $ \ggg $ means rotation to right, $ [i:j] $ indicates the $i$-th to the $j$-th bits are involved in the operation, and $ \|| $ denotes concatenation. Also we use the same S-box as in the F-function. The round key $ k^i $ is the 32 left most bits of the current state. 
+where $ \ggg $ means rotation to right, $ [i:j] $ indicates the $i$-th to the $j$-th bits are involved in the operation, and $ \\| $ denotes concatenation. Also we use the same S-box as in the F-function. The round key $ k^i $ is the 32 left most bits of the current state. 
 
   **Key schedule for 80-bit key.** The key $K$ is ﬁrst initialized with the user key, and updates as follows. 
 
@@ -78,11 +78,34 @@ After that, the round key $k^i$ is the 32 left most bits of the key state.
 ## Design Rationale 
 ### The Cipher Structure 
 
-MIBS is based on Feistel structure with an SPN round function. A large propor- tion of block ciphers have used this scheme since the US Federal Government adopted the DES. Moreover, DES has endured various attacks for over 20 years, even though its round function is very simple. Since Feistel construction oper- ates on half of the block length in each iteration, therefore the size of code or circuitry required to implement it is nearly halved. Thus we use Feistel network as an overall structure with the purpose of minimizing computational resources, which certainly is one of the most important considerations in hardware design for tiny ubiquitous devices. 
+MIBS is based on Feistel structure with an SPN round function. 
+A large proportion of block ciphers have used this scheme since the US Federal Government adopted the DES. Moreover, DES has endured various attacks for over 20 years, even though its round function is very simple. 
+Since Feistel construction opeates on half of the block length in each iteration, therefore the size of code or circuitry required to implement it is nearly halved. 
+Thus we use Feistel network as an overall structure with the purpose of minimizing computational resources, which certainly is one of the most important considerations in hardware design for tiny ubiquitous devices. 
 
 ### Round Function 
 
-For round function we selected the Substitution-Permutation Network (SPN). The SPN structure is directly based on the concepts of confusion and diﬀusion. The confusion component is a nonlinear substitution and the diﬀusion compo- nent is a linear mixing which is used for diﬀusing the cryptographic characteris- tics of substitution layer. The substitution layer. The most important objective in designing a block cipher targeted to embedded applications such as RFID tags, is to achieve low complexity in hardware while providing suﬃcient security. Consequently an ap- propriate substitution layer of such a block cipher should meets the above bal- ance. Although, large S-boxes can achieve better security but even in software, large S-boxes require high storage cost and they are far worse in hardware. On the other hand, too small S-boxes can hardly achieve suitable security. We observed the gate count increases exponentially with the size of S-box. As a result, we decided to use 4 × 4 S-boxes with regard to hardware efficiency and at the same time adequate security. Also existing lightweight block ciphers like PRESENT, and mCRYPTON have used 4 × 4 S-boxes too. The S-box used in MIBS block cipher is the same as the S0 mapping applied in mCRYPTON [7]. The linear transformation. In order to construct a fast and strong block cipher, we design a round function that is secure against diﬀerential and lin- ear cryptanalysis and yield small values for the maximum diﬀerential and linear probabilities p, q. Kanda et al. [11], proposed a search algorithm for construct- ing an optimal linear transformation layer by using the matrix representation in order to minimize probabilities p, q as much as possible. They determined an optimal linear transformation layer among many candidates which has a lower computational complexity, which we used in MIBS. Additionally they showed that any linear transformation following a non-linear layer consists of 8 parallel S-boxes, can not have branch number more than 5. The branch number is the minimum number of active S-boxes in two consecutive rounds of a non-trivial diﬀerential characteristic or non-trivial linear trail [12]. In this context, by Optimal we mean that the maximum diﬀerential and linear probabilities p, q are as small as possible. Similar linear transformations is used also in E2[13] and Camellia[14] block ciphers. The linear layer M, which we call mixing layer, is represented using only 16 nibble-wise XORs that is suitable for computational eﬃciency. For security against diﬀerential and linear cryptanalysis, the branch number of layer M is optimal. Consequently, the mixing layer piles up the num- ber of active S-boxes every two rounds to minimize the maximum diﬀerential and linear probabilities.
+For round function we selected the Substitution-Permutation Network (SPN). 
+The SPN structure is directly based on the concepts of confusion and diﬀusion. 
+The confusion component is a nonlinear substitution and the diﬀusion component is a linear mixing which is used for diﬀusing the cryptographic characteristics of substitution layer. 
+
+**The substitution layer.** The most important objective in designing a block cipher targeted to embedded applications such as RFID tags, is to achieve low complexity in hardware while providing suﬃcient security. 
+Consequently an appropriate substitution layer of such a block cipher should meets the above balance. 
+Although, large S-boxes can achieve better security but even in software, large S-boxes require high storage cost and they are far worse in hardware. 
+On the other hand, too small S-boxes can hardly achieve suitable security. 
+We observed the gate count increases exponentially with the size of S-box. 
+As a result, we decided to use 4 × 4 S-boxes with regard to hardware efficiency and at the same time adequate security. Also existing lightweight block ciphers like PRESENT, and mCRYPTON have used 4 × 4 S-boxes too. 
+The S-box used in MIBS block cipher is the same as the S0 mapping applied in mCRYPTON. 
+
+**The linear transformation.** In order to construct a fast and strong block cipher, we design a round function that is secure against diﬀerential and linear cryptanalysis and yield small values for the maximum diﬀerential and linear probabilities p, q.
+Kanda et al. [11], proposed a search algorithm for constructing an optimal linear transformation layer by using the matrix representation in order to minimize probabilities p, q as much as possible. 
+They determined an optimal linear transformation layer among many candidates which has a lower computational complexity, which we used in MIBS. 
+Additionally they showed that any linear transformation following a non-linear layer consists of 8 parallel S-boxes, can not have branch number more than 5. 
+The branch number is the minimum number of active S-boxes in two consecutive rounds of a non-trivial diﬀerential characteristic or non-trivial linear trail [12]. 
+In this context, by Optimal we mean that the maximum diﬀerential and linear probabilities p, q are as small as possible. Similar linear transformations is used also in E2 and Camellia block ciphers. 
+The linear layer M, which we call mixing layer, is represented using only 16 nibble-wise XORs that is suitable for computational eﬃciency. 
+For security against diﬀerential and linear cryptanalysis, the branch number of layer M is optimal. 
+Consequently, the mixing layer piles up the number of active S-boxes every two rounds to minimize the maximum diﬀerential and linear probabilities.
 
 You can use the [editor on GitHub](https://github.com/mibscipher/mibscipher.github.io/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
 
